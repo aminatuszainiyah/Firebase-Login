@@ -1,12 +1,11 @@
 package com.example.myapplication
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
-import android.widget.EditText
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.firebase.ui.auth.AuthUI
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
@@ -22,11 +21,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        //Inisialisasi ID (Button)
         logout.setOnClickListener(this)
         save.setOnClickListener(this)
         showdata.setOnClickListener(this)
-//Mendapatkan Instance Firebase Autentifikasi
+
         auth = FirebaseAuth.getInstance()
     }
         private fun isEmpty(s: String): Boolean {
@@ -35,14 +33,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         override fun onClick(v: View) {
             when (v.getId()) {
                 R.id.save -> {
-                    // Statement program untuk simpan data
-                    //Mendapatkan UserID dari pengguna yang Terautentikasi
                     val getUserID = auth!!.currentUser!!.uid
-                    //Mendapatkan Instance dari Database
                     val database = FirebaseDatabase.getInstance()
-                    var nim = findViewById <EditText> (R.id.nim)
-                    var nama = findViewById <EditText> (R.id.nama)
-                    var jurusan = findViewById <EditText> (R.id.jurusan)
                     val getNIM: String = nim.getText().toString()
                     val getNama: String = nama.getText().toString()
                     val getJurusan: String = jurusan.getText().toString()
@@ -64,32 +56,29 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                             }
                     }
                 }
-
-
                 R.id.logout ->
                     // Statement program untuk logout/keluar
                     AuthUI.getInstance()
                         .signOut(this)
                         .addOnCompleteListener(object : OnCompleteListener<Void> {
                             override fun onComplete(p0: Task<Void>) {
-                                Toast.makeText(
-                                    this@MainActivity,
-                                    "Logout Berhasil",
-                                    Toast.LENGTH_SHORT
-                                )
-                                    .show()
-                                intent = Intent(
-                                    applicationContext,
-                                    LoginActivity::class.java
-                                )
+                                Toast.makeText(this@MainActivity, "Logout Berhasil",
+                                    Toast.LENGTH_SHORT).show()
+                                intent = Intent(applicationContext, LoginActivity::class.java)
                                 startActivity(intent)
                                 finish()
                             }
                         })
-
                 R.id.showdata -> {
+                    startActivity(Intent(this@MainActivity, MyListData::class.java))
                 }
             }
         }
 }
+
+
+
+
+
+
 
